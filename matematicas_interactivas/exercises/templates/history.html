@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Historial de Ejercicios{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Historial de Ejercicios</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Total de Ejercicios</h5>
+                                <h2 class="text-primary">{{ total_exercises }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Respuestas Correctas</h5>
+                                <h2 class="text-success">{{ total_correct }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Precisión General</h5>
+                                <h2 class="text-info">{{ overall_accuracy }}%</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4 class="mb-3">Sesiones de Ejercicios</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Dificultad</th>
+                                <th>Categoría</th>
+                                <th>Ejercicios</th>
+                                <th>Correctos</th>
+                                <th>Precisión</th>
+                                <th>Duración</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for session in sessions %}
+                            <tr>
+                                <td>{{ session.start_time|date:"d/m/Y H:i" }}</td>
+                                <td>{{ session.difficulty.name }}</td>
+                                <td>{{ session.category.name|default:"N/A" }}</td>
+                                <td>{{ session.total_exercises }}</td>
+                                <td>{{ session.correct_answers }}</td>
+                                <td>{{ session.accuracy }}%</td>
+                                <td>{{ session.duration }}</td>
+                                <td>
+                                    <a href="{% url 'exercise_results' session_id=session.id %}" class="btn btn-sm btn-info">Ver Detalles</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center">No hay sesiones de ejercicios registradas.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <a href="{% url 'exercise_config' %}" class="btn btn-primary">Nueva Sesión</a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Volver al Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

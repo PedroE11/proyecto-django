@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro de Actividad{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Registro de Actividad</h3>
+            </div>
+            <div class="card-body">
+                {% if logs %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Fecha y Hora</th>
+                                <th>Tipo de Actividad</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in logs %}
+                            <tr>
+                                <td>{{ log.timestamp|date:"d/m/Y H:i:s" }}</td>
+                                <td>
+                                    <span class="badge bg-primary">{{ log.get_activity_type_display|default:log.activity_type }}</span>
+                                </td>
+                                <td>{{ log.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center text-muted">
+                    <p>No hay actividad registrada.</p>
+                    <a href="{% url 'exercise_config' %}" class="btn btn-primary">Comenzar a Practicar</a>
+                </div>
+                {% endif %}
+                
+                <div class="mt-4 text-center">
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Volver al Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

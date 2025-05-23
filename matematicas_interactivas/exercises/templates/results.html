@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Resultados{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Resultados de la Sesión</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Ejercicios</h5>
+                                <h2 class="text-primary">{{ stats.total_exercises }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Correctos</h5>
+                                <h2 class="text-success">{{ stats.correct_answers }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Precisión</h5>
+                                <h2 class="text-info">{{ stats.accuracy }}%</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Duración</h5>
+                                <h2 class="text-warning">{{ stats.duration }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if operation_stats %}
+                <h4 class="mb-3">Estadísticas por Operación</h4>
+                <div class="row mb-4">
+                    {% for op_type, op_stat in operation_stats.items %}
+                    <div class="col-md-3 mb-3">
+                        <div class="card">
+                            <div class="card-header">{{ op_stat.name }}</div>
+                            <div class="card-body">
+                                <p>Total: {{ op_stat.total }}</p>
+                                <p>Correctos: {{ op_stat.correct }}</p>
+                                <p>Precisión: {{ op_stat.accuracy }}%</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <h4 class="mb-3">Detalle de Ejercicios</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Ejercicio</th>
+                                <th>Tu Respuesta</th>
+                                <th>Respuesta Correcta</th>
+                                <th>Resultado</th>
+                                <th>Tiempo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for attempt in attempts %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ attempt.exercise.question }}</td>
+                                <td>{{ attempt.user_answer }}</td>
+                                <td>{{ attempt.exercise.answer }}</td>
+                                <td>
+                                    {% if attempt.is_correct %}
+                                    <span class="badge bg-success">Correcto</span>
+                                    {% else %}
+                                    <span class="badge bg-danger">Incorrecto</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ attempt.time_taken }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <a href="{% url 'exercise_config' %}" class="btn btn-primary">Nueva Sesión</a>
+                    <a href="{% url 'exercise_history' %}" class="btn btn-secondary">Ver Historial</a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Volver al Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
