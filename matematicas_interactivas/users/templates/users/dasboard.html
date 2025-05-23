@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Matemáticas Interactivas{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>¡Bienvenido, {{ user.first_name|default:user.username }}!</h1>
+        <p class="lead">Dashboard de Matemáticas Interactivas</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Ejercicios Totales</h5>
+                <h2 class="text-primary">{{ stats.total_exercises }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Respuestas Correctas</h5>
+                <h2 class="text-success">{{ stats.correct_answers }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Precisión</h5>
+                <h2 class="text-info">{{ stats.accuracy }}%</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Acciones Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <a href="#" class="btn btn-primary mb-2 w-100">Practicar Ejercicios</a>
+                <a href="{% url 'progress' %}" class="btn btn-info mb-2 w-100">Ver Progreso</a>
+                <a href="{% url 'profile' %}" class="btn btn-secondary w-100">Editar Perfil</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Actividad Reciente</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_activity %}
+                    {% for activity in recent_activity %}
+                    <div class="mb-2">
+                        <small class="text-muted">{{ activity.timestamp|date:"d/m/Y H:i" }}</small><br>
+                        {{ activity.description }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No hay actividad reciente.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -55,7 +55,7 @@ ROOT_URLCONF = 'matematicas_interactivas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'matematicas_interactivas' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
